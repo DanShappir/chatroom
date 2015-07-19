@@ -10,12 +10,12 @@ var fs = require('fs');
 app.listen(8088);
 
 function handler(req, res) {
-    var url = req.url;
+    var url = req.url && req.url !== '/' ? req.url : '/index.html';
     if (url.indexOf('..') !== -1) {
         res.writeHead(403);
         return res.end('Error accessing resource');
     } else {
-        fs.readFile(__dirname + req.url,
+        fs.readFile(__dirname + url,
             function (err, data) {
                 if (err) {
                     res.writeHead(500);

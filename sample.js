@@ -16,10 +16,10 @@
             this.props.chatClient.send(textarea.value);
         }
         render() {
-            return <div>
+            return <span>
                 <textarea ref='input'/>
                 <button onClick={this._send.bind(this)}>Send</button>
-            </div>;
+            </span>;
         }
     }
 
@@ -38,8 +38,10 @@
 
     var root = document.getElementById('root');
     React.render(<div>
+        <label>Input:</label>
         <Input chatClient={chatClient}/>
         <br/>
+        <label>Output:</label>
         <Output chatClient={chatClient}/>
     </div>, root);
 })();
