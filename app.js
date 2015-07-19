@@ -10,15 +10,21 @@ var fs = require('fs');
 app.listen(8088);
 
 function handler(req, res) {
-    fs.readFile(__dirname + '/chatClient.js',
-        function (err, data) {
-            if (err) {
-                res.writeHead(500);
-                return res.end('Error loading chatClient.js');
-            }
-            res.writeHead(200);
-            res.end(data);
-        });
+    var url = req.url;
+    if (url.indexOf('..') !== -1) {
+        res.writeHead(403);
+        return res.end('Error accessing resource');
+    } else {
+        fs.readFile(__dirname + req.url,
+            function (err, data) {
+                if (err) {
+                    res.writeHead(500);
+                    return res.end('Error loading resource');
+                }
+                res.writeHead(200);
+                res.end(data);
+            });
+    }
 }
 
 var clients = (function () {
