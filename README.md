@@ -10,14 +10,14 @@ Create a chatroom client using [React](https://facebook.github.io/react/). The c
 * Optional: send message to specific user
 * Logout
 
-[index.html](blob/master/index.html) and [chat.js](blob/master/chat.js) contain a very basic implementation of a chat-room client.
+[index.html](index.html) and [chat.js](chat.js) contain a very basic implementation of a chat-room client.
 It can be used as a basis for the complete solution.
 
 ## ES6 / ES2015
 This project uses [Babel](https://babeljs.io/) for ES6 and JSX.
 
 ## Chatroom server
-[app.js](blob/master/app.js) implements a simple chatroom server using [Socket.io](http://socket.io/). It supports a single chatroom without limits on number of participants.
+[app.js](app.js) implements a simple chatroom server using [Socket.io](http://socket.io/). It supports a single chatroom without limits on number of participants.
 
 ```
 node app.js
@@ -28,7 +28,7 @@ Default port is 8088. Use -p or --port on the command-line to specify an alterna
 The chatroom servers doubles as a static file HTTP server, that can be used to deliver the HTML and JavaScript files.
 
 ## Client-side API
-[chatClient.js](blob/master/chatClient.js) implements a simple client-side API for the chatroom server, on top of Socket.io. It provides the following API:
+[chatClient.js](chatClient.js) implements a simple client-side API for the chatroom server, on top of Socket.io. It provides the following API:
 
 ### Methods
 * **ChatRoom** constructor (with the *new* operator) - use to create a new chatroom client instance. A single argument is required, which is the URL of the chatroom server.
