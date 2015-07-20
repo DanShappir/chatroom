@@ -3,6 +3,33 @@
 <head lang="en">
     <meta charset="UTF-8">
     <title>Chat sample client</title>
+    <style>
+        .chat {
+            display: flex;
+            flex-direction: column;
+            -webkit-flex-direction: column;
+            width:300px;
+            height:400px;
+        }
+        .output {
+            flex: 1 1 70%;
+            -webkit-flex: 1 1 70%;
+            background-color: yellow;
+            border: solid 1px black;
+            overflow: scroll;
+        }
+        .input {
+            flex: 1 1;
+            -webkit-flex: 1 1;
+            display: flex;
+            flex-direction: row;
+            -webkit-flex-direction: row;
+        }
+        .input > * {
+            flex: 1 1 auto;
+            -webkit-flex: 1 1 auto;
+        }
+    </style>
 </head>
 <body>
     <h1>Chat sample client</h1>
@@ -12,6 +39,6 @@
     <script src="/socket.io/socket.io.js"></script>
     <script src="node_modules/babel-core/browser.js"></script>
     <script src="chatClient.js"></script>
-    <script type="text/babel" src="sample.js"></script>
+    <script type="text/babel" src="chat.js"></script>
 </body>
 </html>

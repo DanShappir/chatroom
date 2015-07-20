@@ -22,11 +22,6 @@ function ChatClient(url) {
 
     var self = this;
     socket
-        .on('connect', function () {
-            if (self.onConnect) {
-                self.onConnect();
-            }
-        })
         .on('disconnect', function () {
             if (self.onDisconnect) {
                 self.onDisconnect();
@@ -38,8 +33,8 @@ function ChatClient(url) {
             }
         })
         .on('hello', function (data) {
-            if (self.onConnected) {
-                self.onConnected(data.id);
+            if (self.onConnect) {
+                self.onConnect(data.id);
             }
         })
         .on('update', function (data) {
