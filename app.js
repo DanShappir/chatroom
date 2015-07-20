@@ -3,12 +3,21 @@
  */
 'use strict';
 
+var DEFAULT_PORT = 8088;
+
+var program = require('commander');
 var app = require('http').createServer(handler)
 var io = require('socket.io')(app);
 var fs = require('fs');
 
-app.listen(8088);
+program
+    .version('0.0.1')
+    .option('-p, --port <n>', 'Force app port (requires sudo on osx)', parseInt)
+    .parse(process.argv);
 
+app.listen(program.port || DEFAULT_PORT);
+
+// HTTP server for static files
 function handler(req, res) {
     var url = req.url && req.url !== '/' ? req.url : '/index.html';
     if (url.indexOf('..') !== -1) {
@@ -67,7 +76,7 @@ io.on('connection', function (socket) {
     socket.emit('hello', client);
 
     socket
-        .on('login', function (data) {
+        .once('login', function (data) {
             console.log('login', client.id, data.name);
             client.name = data.name;
             clients.add(socket, client);
@@ -76,20 +85,23 @@ io.on('connection', function (socket) {
             socket.broadcast.emit('update', list);
         })
         .on('msg', function(data) {
-            var message = {
-                from: client,
-                message: data.message
-            };
-            if (data.to) {
-                var to = clients.getSocket(data.to.id);
-                if (to) {
+            if (client.name) {
+                var message = {
+                    from: client,
+                    message: data.message
+                };
+                if (data.to) {
                     message.personal = true;
-                    to.emit('msg', message);
+                    var to = clients.getSocket(data.to.id);
+                    if (to) {
+                        to.emit('msg', message);
+                    }
+                } else {
+                    message.personal = false;
+                    socket.broadcast.emit('msg', message);
                 }
-            } else {
-                socket.broadcast.emit('msg', message);
+                console.log('message', message.personal, data.message);
             }
-            console.log('message', !!message.personal, data.message);
         })
         .on('disconnect', function () {
             var id = clients.remove(socket);
@@ -97,5 +109,6 @@ io.on('connection', function (socket) {
                 console.log('disconnect', id);
                 socket.broadcast.emit('update', clients.list());
             }
+            client.name = '';
         });
 });

@@ -44,7 +44,7 @@ function ChatClient(url) {
         })
         .on('msg', function (data) {
             if (self.onMessage) {
-                self.onMessage(data.from, data.message);
+                self.onMessage(data.from, data.message, data.personal);
             }
         });
 }
