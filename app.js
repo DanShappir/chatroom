@@ -6,7 +6,7 @@
 var DEFAULT_PORT = 8088;
 
 var program = require('commander');
-var app = require('http').createServer(handler)
+var app = require('http').createServer(handler);
 var io = require('socket.io')(app);
 var fs = require('fs');
 
