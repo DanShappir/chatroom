@@ -4,17 +4,15 @@
 (function () {
     'use strict';
 
-    class Output extends React.Component {
-        render() {
-            return <div className='output'>{
-                this.props.msgs.map(({from, message}) => <div><b>{from.name}:</b> {message}</div>)
-            }</div>;
-        }
-    }
+    const Output = ({msgs}) =>
+        <div className='output'>{
+            msgs.map(({from, msg}) => <div><b>{from.name}:</b> {msg}</div>)
+        }</div>;
+    Output.displayName = 'Output';
 
     class Input extends React.Component {
         _send() {
-            var textarea = React.findDOMNode(this.refs.input);
+            const textarea = ReactDOM.findDOMNode(this.refs.input);
             this.props.send(textarea.value);
         }
         render() {
@@ -24,35 +22,32 @@
             </div>;
         }
     }
+    Input.displayName = 'Input';
 
-    class Chat extends React.Component {
-        render() {
-            return <div className='chat'>
-                <Output msgs={this.props.msgs}/>
-                <Input send={this.props.send}/>
-            </div>;
-        }
-    }
+    const Chat = ({msgs, send}) =>
+        <div className='chat'>
+            <Output msgs={msgs}/>
+            <Input send={send}/>
+        </div>;
+    Chat.displayName = 'Chat';
 
     function chat(server, username, root) {
-        var msgs = [];
-
-        function render() {
-            React.render(<Chat msgs={msgs} send={send}/>, root);
-        }
-
         const chat = new ChatClient(server);
-        const send = chat.send.bind(chat);
-        chat.onConnect = function () {
+
+        let msgs = [];
+
+        const render = () => ReactDOM.render(<Chat msgs={msgs} send={chat.send}/>, root);
+
+        chat.onConnect = () => {
             chat.login(username);
             render();
         };
-        chat.onMessage = function (from, message) {
-            msgs.push({from, message});
+        chat.onMessage = (from, msg) => {
+            msgs.push({from, msg});
             render();
         };
     }
 
     const root = document.getElementById('root');
-    chat(location.host, 'Dan', root);
+    chat('http://localhost', 'Dan', root);
 }());
