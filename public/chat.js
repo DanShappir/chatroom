@@ -6,19 +6,21 @@
 
     const Output = ({msgs}) =>
         <div className='output'>{
-            msgs.map(({from, msg}) => <div><b>{from.name}:</b> {msg}</div>)
+            msgs.map(({from, msg}, i) => <div key={i}><b>{from.name}:</b> {msg}</div>)
         }</div>;
     Output.displayName = 'Output';
 
     class Input extends React.Component {
         _send() {
-            const textarea = ReactDOM.findDOMNode(this.refs.input);
-            this.props.send(textarea.value);
+            const textarea = this.refs.input;
+            const {value} = textarea;
+            textarea.value = '';
+            this.props.send(value);
         }
         render() {
             return <div className='input'>
                 <textarea ref='input'/>
-                <button onClick={this._send.bind(this)}>Send</button>
+                <button onClick={() => this._send()}>Send</button>
             </div>;
         }
     }
